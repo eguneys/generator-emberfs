@@ -1,36 +1,46 @@
-/*global describe, beforeEach, it */
+/*global describe, beforeEach, it, xit */
 'use strict';
 var path = require('path');
 var helpers = require('yeoman-generator').test;
+var assert = require('yeoman-generator').assert;
 
 describe('ember-fullstack generator', function () {
-  beforeEach(function (done) {
-    helpers.testDirectory(path.join(__dirname, 'temp'), function (err) {
-      if (err) {
-        return done(err);
-      }
+    var defaultOptions = {
+    };
 
-      this.app = helpers.createGenerator('ember-fullstack:app', [
-        '../../app'
-      ]);
-      done();
-    }.bind(this));
-  });
+    // function generatorTest(generatorType, name, mockPrompt, callback) {
+    //     this.app.run({}, function() {
+    //         var efGenerator;
+    //         var deps = [path.join('../..', generatorType)];
+    //         efGenerator = helpers.createGenerator('ember-fullstack:', generatorType, deps, [name]);
 
-  it('creates expected files', function (done) {
-    var expected = [
-      // add files you expect to exist here.
-      '.jshintrc',
-      '.editorconfig'
-    ];
+    //         helpers.mockPrompt(efGenerator, mockPrompt);
+    //         efGenerator.run([], function() {
+    //             callback();
+    //         });
+    //     });
+    // }
 
-    helpers.mockPrompt(this.app, {
-      'someOption': true
+    beforeEach(function() {
+        this.app = helpers
+            .run(path.join(__dirname, '../generators/app'))
+            .inDir(path.join(__dirname, '.tmp'));
+            //.withGenerators([[helpers.createDummyGenerator(), 'ember-fullstack']]);
     });
-    this.app.options['skip-install'] = true;
-    this.app.run({}, function () {
-      helpers.assertFile(expected);
-      done();
+
+    it('should generate expected files', function(done) {
+        helpers.mockPrompt(this.app, defaultOptions);
+
+        this.app.on('end', function() {
+            assert.file([ // TODO assert directory
+                '.gitignore',
+                '.jshintrc',
+                '.bowerrc',
+                'package.json',
+                'bower.json',
+                'gulpfile.js'
+            ]);
+            done();
+        });
     });
-  });
 });
