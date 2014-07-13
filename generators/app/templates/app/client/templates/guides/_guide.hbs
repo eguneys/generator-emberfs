@@ -1,0 +1,21 @@
+<h3>
+  <i class="fa fa-tag"></i>&nbsp;&nbsp;
+  {{title}}
+</h3>
+<hr/>
+<p>{{body}}</p>
+
+{{#if prev_guide}}
+{{#link-to 'guides.guide' prev_guide }}
+  <i class="fa fa-fw fa-long-arrow-left"></i>
+  {{prev_guide.title}}
+{{/link-to}}  
+{{/if}}
+
+{{#if next_guide }}
+{{#link-to 'guides.guide' next_guide class="pull-right"}}
+  {{next_guide.title}}
+  <i class="fa fa-fw fa-long-arrow-right"></i>
+{{/link-to}}
+{{/if}}
+

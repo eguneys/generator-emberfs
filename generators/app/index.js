@@ -1,6 +1,9 @@
 'use strict';
 var util = require('util');
 var path = require('path');
+
+var genUtils = require('../../util.js');
+
 var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
 var chalk = require('chalk');
@@ -55,22 +58,28 @@ var EmberFullstackGenerator = yeoman.generators.Base.extend({
     },
 
     generateBasic: function() {
-        // git
+
         this.template('gitignore', '.gitignore');
-        // jshint
         this.copy('jshintrc', '.jshintrc');
-        // bowerrc
         this.copy('bowerrc', '.bowerrc');
-        // packageJSON
         this.template('_package.json', 'package.json');
-        // bower
         this.copy('_bower.json', 'bower.json');
-        // gulpfile
         this.template('gulpfile.js');
+        
     },
 
     generateClient: function() {
+        this.sourceRoot(path.join(__dirname, 'templates'));
         
+        genUtils.processDirectory(this, 'app/client', 'app/client');
+
+        this.mkdir('app/client/scripts/views');
+        this.mkdir('app/client/vendor');
+
+        genUtils.processDirectory(this, 'app/views', 'app/views');
+
+        genUtils.processDirectory(this, 'config', 'config');
+
     },
     
     generateServer: function() {

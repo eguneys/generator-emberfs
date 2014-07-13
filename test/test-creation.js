@@ -11,44 +11,78 @@ var expect = chai.expect;
 
 
 describe('ember-fullstack generator', function () {
+    
     var defaultOptions = {
     };
-
-    // function generatorTest(generatorType, name, mockPrompt, callback) {
-    //     this.app.run({}, function() {
-    //         var efGenerator;
-    //         var deps = [path.join('../..', generatorType)];
-    //         efGenerator = helpers.createGenerator('ember-fullstack:', generatorType, deps, [name]);
-
-    //         helpers.mockPrompt(efGenerator, mockPrompt);
-    //         efGenerator.run([], function() {
-    //             callback();
-    //         });
-    //     });
-    // }
-
+    
     beforeEach(function() {
-        this.timeout(100000);
         this.app = helpers
             .run(path.join(__dirname, '../generators/app'))
             .inDir(path.join(__dirname, '.tmp'));
-        //.withGenerators([[helpers.createDummyGenerator(), 'ember-fullstack']]);
     });
 
     it('should generate expected files', function(done) {
-        helpers.mockPrompt(this.app, defaultOptions);
 
-        this.app.on('end', function() {
-            assert.file([
-                '.gitignore',
-                '.jshintrc',
-                '.bowerrc',
-                'package.json',
-                'bower.json',
-                'gulpfile.js'
-            ]);
-            done();
-        });
+        this.app.withPrompt(defaultOptions)
+            .on('end', function() {
+
+                // project files
+                assert.file([
+                    '.gitignore',
+                    '.jshintrc',
+                    '.bowerrc',
+                    'package.json',
+                    'bower.json',
+                    'gulpfile.js'
+                ]);
+
+                // client files
+                assert.file([
+                    // app/client
+                    'app/client/favicon.ico',
+                    'app/client/robots.txt',
+                    // app/client/styles
+                    'app/client/styles/reset.scss',
+                    'app/client/styles/style.scss',
+                    'app/client/styles/layout/footer.scss',
+                    'app/client/styles/pages/home.scss',
+                    // app/client/templates
+                    'app/client/templates/_nav-main.hbs',
+                    'app/client/templates/catchall.hbs',
+                    'app/client/templates/application.hbs',
+                    'app/client/templates/index.hbs',
+                    'app/client/templates/guides.hbs',
+                    'app/client/templates/guides/_guide.hbs',
+                    'app/client/templates/guides/guide.hbs',
+                    'app/client/templates/guides/index.hbs',
+                    // app/client/scripts
+                    'app/client/scripts/common.js',
+                    'app/client/scripts/main.js',
+                    'app/client/scripts/app.js',
+                    'app/client/scripts/router.js',
+                    'app/client/scripts/routes/index_route.js',
+                    'app/client/scripts/routes/index_deps.js',
+                    'app/client/scripts/routes/guides_route.js',
+                    'app/client/scripts/routes/guides_deps.js',
+                    'app/client/scripts/models/feature.js',
+                    'app/client/scripts/models/guide.js',
+                    'app/client/scripts/controllers/features_controller.js',
+                    'app/client/scripts/controllers/features_controller.js',
+                    'app/client/scripts/controllers/guide_controller.js',
+                    'app/client/scripts/mixins/lazy_loader_mixin.js',
+                    'app/client/scripts/views',
+                    'app/client/vendor'
+                ]);
+
+                // server files
+                assert.file([
+                    'app/views/index.hbs',
+                    'app/views/layouts/main.hbs',
+                    'config/server.js'
+                ]);
+            
+                done();
+            });
     });
 
     describe('running app', function() {
@@ -61,20 +95,19 @@ describe('ember-fullstack generator', function () {
             });
         });
         describe('with default options', function() {
-            beforeEach(function() {
-                helpers.mockPrompt(this.app, defaultOptions);
-            });
 
             it('should pass jshint', function(done) {
                 this.timeout(60000);
-                this.app.on('end', function() {
-                    exec('gulp jshint', function(error, stdout, stderr) {
-                        expect(stdout).to.contain('Finished \'jshint\'');
-                        expect(stdout).to.not.contain('problems');
-                        
-                        done();
+                this.app.withPrompt(defaultOptions)
+                    .on('end', function() {
+                        exec('gulp jshint', function(error, stdout, stderr) {
+                            expect(stdout).to.contain('Finished \'jshint\'');
+                            expect(stdout).to.not.contain('problems');
+                            
+                            done();
+                        });
                     });
-                });
+                
             });
         });
     });

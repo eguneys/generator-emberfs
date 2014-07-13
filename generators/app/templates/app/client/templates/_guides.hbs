@@ -1,0 +1,12 @@
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="nav nav-stacked">
+        {{#each}}
+          <li>{{#link-to 'guides.guide' .}}{{title}}{{/link-to}}</li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="col-md-8">
+      {{outlet}}
+    </div>
+  </div>
