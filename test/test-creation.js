@@ -1,8 +1,14 @@
 /*global describe, beforeEach, it, xit */
 'use strict';
 var path = require('path');
+var fs = require('fs-extra');
+var exec = require('child_process').exec;
+
 var helpers = require('yeoman-generator').test;
 var assert = require('yeoman-generator').assert;
+var chai = require('chai');
+var expect = chai.expect;
+
 
 describe('ember-fullstack generator', function () {
     var defaultOptions = {
@@ -22,17 +28,18 @@ describe('ember-fullstack generator', function () {
     // }
 
     beforeEach(function() {
+        this.timeout(100000);
         this.app = helpers
             .run(path.join(__dirname, '../generators/app'))
             .inDir(path.join(__dirname, '.tmp'));
-            //.withGenerators([[helpers.createDummyGenerator(), 'ember-fullstack']]);
+        //.withGenerators([[helpers.createDummyGenerator(), 'ember-fullstack']]);
     });
 
     it('should generate expected files', function(done) {
         helpers.mockPrompt(this.app, defaultOptions);
 
         this.app.on('end', function() {
-            assert.file([ // TODO assert directory
+            assert.file([
                 '.gitignore',
                 '.jshintrc',
                 '.bowerrc',
@@ -43,4 +50,33 @@ describe('ember-fullstack generator', function () {
             done();
         });
     });
+
+    describe('running app', function() {
+        beforeEach(function() {
+            this.app.inDir(path.join(__dirname, '.tmp'), function(dir) {
+                //node_modules
+                fs.copySync(path.join(__dirname, 'fixtures/node_modules'),
+                            path.join(dir, 'node_modules'));
+                //bower_components
+            });
+        });
+        describe('with default options', function() {
+            beforeEach(function() {
+                helpers.mockPrompt(this.app, defaultOptions);
+            });
+
+            it('should pass jshint', function(done) {
+                this.timeout(60000);
+                this.app.on('end', function() {
+                    exec('gulp jshint', function(error, stdout, stderr) {
+                        expect(stdout).to.contain('Finished \'jshint\'');
+                        expect(stdout).to.not.contain('problems');
+                        
+                        done();
+                    });
+                });
+            });
+        });
+    });
+
 });
