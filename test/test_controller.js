@@ -16,7 +16,6 @@ describe('ember-fullstack:controller generator', function () {
     var defaultArgs = 'Test';
     
     beforeEach(function() {
-        this.timeout(10000);
         this.app_controller = helpers
             .run(path.join(__dirname, '../generators/controller'))
             .inDir(path.join(__dirname, '.tmp'));
@@ -24,6 +23,7 @@ describe('ember-fullstack:controller generator', function () {
 
 
     it('should generate expected files', function(done) {
+        this.timeout(10000);
         this.app_controller.withPrompt(defaultOptions)
             .withArguments(defaultArgs)
             .on('end', function() {
