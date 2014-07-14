@@ -11,15 +11,26 @@ var chalk = require('chalk');
 
 var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
     init: function () {
-        
+        this.option('lazy-load', {
+            desc: 'Use lazy loader mixin',
+            type: Boolean,
+            defaults: false
+        });
     },
 
     generate: function() {
         var slugName = this._.slugify(this.name);
-        
-        this.template('base.js', 'app/client/scripts/routes/' + slugName + '_route.js');
 
-        this.template('deps.js', 'app/client/scripts/routes/' + slugName + '_deps.js');
+        if (!this.options['lazy-load']) {
+
+            this.template('base.js', 'app/client/scripts/routes/' + slugName + '_route.js');
+            
+        } else {
+
+            this.template('base_lazy.js', 'app/client/scripts/routes/' + slugName + '_route.js');
+            this.template('deps.js', 'app/client/scripts/routes/' + slugName + '_deps.js');
+
+        }
     }
 });
 

@@ -17,14 +17,14 @@ describe('ember-fullstack:model generator', function () {
     
     beforeEach(function() {
         this.timeout(10000);
-        this.app_route = helpers
+        this.app_model = helpers
             .run(path.join(__dirname, '../generators/model'))
             .inDir(path.join(__dirname, '.tmp'));
     });
 
 
     it('should generate expected files', function(done) {
-        this.app_route.withPrompt(defaultOptions)
+        this.app_model.withPrompt(defaultOptions)
             .withArguments(defaultArgs)
             .on('end', function() {
 
