@@ -11,10 +11,8 @@ var chalk = require('chalk');
 
 var EmberFullstackGenerator = yeoman.generators.Base.extend({
     init: function () {
-        this.argument('name', { type: String, required: false });
-        this.appname = this.name || path.basename(process.cwd());
-        
-        this.appPath = this.env.options.appPath;
+        //this.argument('name', { type: String, required: false });
+        //this.appname = this.name || this.appname;
         
         this.pkg = require('../../package.json');
     },

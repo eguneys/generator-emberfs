@@ -22,7 +22,7 @@ describe('ember-fullstack generator', function () {
     });
 
     it('should generate expected files', function(done) {
-
+        this.timeout(10000);
         this.app.withPrompt(defaultOptions)
             .on('end', function() {
 
