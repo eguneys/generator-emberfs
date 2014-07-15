@@ -11,6 +11,8 @@ var chalk = require('chalk');
 
 var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
     init: function () {
+        this.argument('arg_path', { type: String, defaults: '', banner: 'path' });
+        
         this.option('lazy-load', {
             desc: 'Use lazy loader mixin',
             type: Boolean,
@@ -42,8 +44,13 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
     injectRoute: function() {
         if (this.options['skip-inject']) { return; }
 
+        this.arg_path = this.arg_path.replace(/"/g, '');
+        
         var slugName = this._.slugify(this.name),
-            routeFile;
+            routeFile,
+            inRouteText = this.arg_path?
+                "'" + slugName + "', { path: '" + this.arg_path + "' }":
+                "'" + slugName + "'";
 
         try {
 
@@ -68,7 +75,7 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
         // https://github.com/stefanpenner/ember-cli/blob/master/blueprints/route/index.js
         routeFile = routeFile.replace(
                 /(map\(function\(\) {[\s\S]+?)\n {4}\}\)/,
-            "$1\n        this.route('" + slugName + "');\n    \})");
+            "$1\n        this.route(" + inRouteText + ");\n    \})");
         
         this.writeFileFromString(routeFile, 'app/client/scripts/router.js');
     },

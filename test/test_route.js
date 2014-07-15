@@ -112,7 +112,6 @@ describe('ember-fullstack:route generator', function () {
             });
             
             it('should generate expected files and inject route', function(done) {
-                
                 this.app_route
                     .withArguments(defaultArgs)
                     .on('end', function() {
@@ -136,6 +135,21 @@ describe('ember-fullstack:route generator', function () {
                         
                         done();
                     });
+            });
+
+            describe('with path argument given', function() {
+
+                it('should inject route with path', function(done) {
+                    this.app_route
+                        .withArguments('Test "/:test_id"')
+                        .on('end', function() {
+
+                            assert.fileContent('app/client/scripts/router.js',
+                                               /(map\(function\(\) {[\s\S]+?)\n {8}this.route\('test', \{ path\: '\/\:test_id' \}\);\n {4}\}\)/);
+                            done();
+                        });
+                });
+                
             });
         });
     });
