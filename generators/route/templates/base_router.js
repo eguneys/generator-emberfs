@@ -1,10 +1,7 @@
 define(['app/app'], function(App) {
     
     App.Router.map(function() {
-        this.resource('guides', function() {
-            this.route('guide', { path: '/:guide_id' });
-        });
-        this.route('catchall', { path: '/*wildcard'});
+        this.route('<%= _.slugify(name) %>'<% if (arg_path){ %>, { path: '<%= arg_path %>' }<% } %>);
     });
 
     App.Router.reopen({

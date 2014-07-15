@@ -75,7 +75,7 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
             this.prompt({
                 type: 'confirm',
                 name: 'routerFile',
-                message: /You don't have a router.js file, would you like to create one?/,
+                message: "You don't have a router.js file, would you like to create one?",
                 default: false
             }, function(answer) {
                 this.includeRouterFile = answer.routerFile;
@@ -97,11 +97,9 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
         
         if (this.includeRouterFile) {
             
-            this.copy('base_router.js',
+            this.template('base_router.js',
                           'app/client/scripts/router.js');
-
-            this.log(chalk.green('router.js created, you can add your route now.'));
-                
+            
         }
     }
     

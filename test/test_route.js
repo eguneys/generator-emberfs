@@ -73,7 +73,7 @@ describe('ember-fullstack:route generator', function () {
     });
 
     describe('with default options', function() {
-        describe('when no router.js file present', function() {
+        describe('when router.js file is not present', function() {
             it('should generate expected files', function(done) {
                 this.app_route
                     .withArguments(defaultArgs)
@@ -91,6 +91,9 @@ describe('ember-fullstack:route generator', function () {
                         ]);
 
                         assert.file('app/client/scripts/router.js');
+
+                        assert.fileContent('app/client/scripts/router.js',
+                                           /map\(function\(\) {[\s\S]+?\n? {8}this.route\('test'\);\n {4}\}\)/);
                         
                         done();
                     });
@@ -136,7 +139,7 @@ describe('ember-fullstack:route generator', function () {
                         assert.file('app/client/scripts/router.js');
                         
                         assert.fileContent('app/client/scripts/router.js',
-                                           /(map\(function\(\) {[\s\S]+?)\n {8}this.route\('test'\);\n {4}\}\)/);
+                                           /map\(function\(\) {[\s\S]+?\n? {8}this.route\('test'\);\n {4}\}\)/);
                         
                         done();
                     });
@@ -150,7 +153,7 @@ describe('ember-fullstack:route generator', function () {
                         .on('end', function() {
 
                             assert.fileContent('app/client/scripts/router.js',
-                                               /(map\(function\(\) {[\s\S]+?)\n {8}this.route\('test', \{ path\: '\/\:test_id' \}\);\n {4}\}\)/);
+                                               /map\(function\(\) {[\s\S]+?\n? {8}this.route\('test', \{ path\: '\/\:test_id' \}\);\n {4}\}\)/);
                             done();
                         });
                 });
