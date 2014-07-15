@@ -41,6 +41,13 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
         }
     },
 
+    generateTemplateFile: function() {
+
+        var slugName = this._.slugify(this.name);
+        
+        this.copy('base_template.hbs', 'app/client/templates/' + slugName + '.hbs');
+    },
+
     injectRoute: function() {
         if (this.options['skip-inject']) { return; }
 

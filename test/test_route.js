@@ -14,6 +14,11 @@ var lessStackTrace = require('../test-util');
 describe('ember-fullstack:route generator', function () {
     
     var defaultArgs = ['Test'];
+
+    var defaultExpectedFiles = [
+        'app/client/scripts/routes/test_route.js',
+        'app/client/templates/test.hbs'
+    ];
     
     beforeEach(function() {
         this.timeout(10000);
@@ -29,10 +34,8 @@ describe('ember-fullstack:route generator', function () {
                 .withOptions({'skip-inject':true})
                 .withArguments(defaultArgs)
                 .on('end', function() {
-
-                    assert.file([
-                        'app/client/scripts/routes/test_route.js'
-                    ]);
+                    
+                    assert.file(defaultExpectedFiles);
 
                     assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
 
@@ -54,10 +57,10 @@ describe('ember-fullstack:route generator', function () {
                 .withArguments(defaultArgs)
                 .on('end', function() {
 
-                    assert.file([
-                        'app/client/scripts/routes/test_route.js',
+                    assert.file([].concat(
+                        defaultExpectedFiles,
                         'app/client/scripts/routes/test_deps.js'
-                    ]);
+                    ));
 
                     assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
                     assert.fileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
@@ -75,9 +78,7 @@ describe('ember-fullstack:route generator', function () {
                     .withPrompt({routerFile: true})
                     .on('end', function() {
 
-                        assert.file([
-                            'app/client/scripts/routes/test_route.js'
-                        ]);
+                        assert.file(defaultExpectedFiles);
 
                         assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
 
@@ -116,9 +117,7 @@ describe('ember-fullstack:route generator', function () {
                     .withArguments(defaultArgs)
                     .on('end', function() {
 
-                        assert.file([
-                            'app/client/scripts/routes/test_route.js'
-                        ]);
+                        assert.file(defaultExpectedFiles);
 
                         assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
 
