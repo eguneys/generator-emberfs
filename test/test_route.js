@@ -67,7 +67,6 @@ describe('ember-fullstack:route generator', function () {
                     assert.fileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
 
                     assert.fileContent('app/client/scripts/routes/test_deps.js', /'templates\/test'/);
-                    
                     done();
                 });
         });        
@@ -120,6 +119,7 @@ describe('ember-fullstack:route generator', function () {
                     .withArguments(defaultArgs)
                     .on('end', function() {
 
+                        /* no need
                         assert.file(defaultExpectedFiles);
 
                         assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
@@ -130,6 +130,9 @@ describe('ember-fullstack:route generator', function () {
                             'app/client/scripts/routes/test_deps.js'
                         ]);
 
+                         */
+
+                        
                         assert.file('app/client/scripts/router.js');
                         
                         assert.fileContent('app/client/scripts/router.js',
