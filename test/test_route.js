@@ -26,7 +26,7 @@ describe('ember-fullstack:route generator', function () {
             .run(path.join(__dirname, '../generators/route'))
             .inDir(path.join(__dirname, '.tmp'));
     });
-
+    
 
     describe('with --skip-inject=true', function() {
         it('should generate expected files', function(done) {
@@ -36,7 +36,7 @@ describe('ember-fullstack:route generator', function () {
                 .on('end', function() {
                     
                     assert.file(defaultExpectedFiles);
-
+                    
                     assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
 
                     assert.noFileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
@@ -59,11 +59,14 @@ describe('ember-fullstack:route generator', function () {
 
                     assert.file([].concat(
                         defaultExpectedFiles,
-                        'app/client/scripts/routes/test_deps.js'
+                        'app/client/scripts/routes/test_deps.js',
+                        'app/client/templates/test'
                     ));
 
                     assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
                     assert.fileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
+
+                    assert.fileContent('app/client/scripts/routes/test_deps.js', /'templates\/test'/);
                     
                     done();
                 });
