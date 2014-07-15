@@ -97,7 +97,7 @@ describe('ember-fullstack generator', function () {
         describe('with default options', function() {
 
             it('should pass jshint', function(done) {
-                this.timeout(60000);
+                this.timeout(20000);
                 this.app.withPrompt(defaultOptions)
                     .on('end', function() {
                         exec('gulp jshint', function(error, stdout, stderr) {

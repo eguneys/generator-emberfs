@@ -16,6 +16,12 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
             type: Boolean,
             defaults: false
         });
+
+        this.option('skip-inject', {
+            desc: 'Skip route inject to router.js',
+            type: Boolean,
+            defaults: false
+        });
     },
 
     generate: function() {
@@ -31,7 +37,54 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
             this.template('deps.js', 'app/client/scripts/routes/' + slugName + '_deps.js');
 
         }
+    },
+
+    injectRoute: function() {
+        if (this.options['skip-inject']) { return; }
+
+        var slugName = this._.slugify(this.name),
+            routeFile;
+
+        try {
+
+            routeFile = this.readFileAsString('app/client/scripts/router.js');
+        } catch(e) {
+
+            var done = this.async();
+            
+            this.prompt({
+                type: 'confirm',
+                name: 'routerFile',
+                message: /You don't have a router.js file, would you like to create one?/,
+                default: false
+            }, function(answer) {
+                this.includeRouterFile = answer.routerFile;
+                done();
+            }.bind(this));
+            
+            return;
+        }
+        
+        // https://github.com/stefanpenner/ember-cli/blob/master/blueprints/route/index.js
+        routeFile = routeFile.replace(
+                /(map\(function\(\) {[\s\S]+?)\n {4}\}\)/,
+            "$1\n        this.route('" + slugName + "');\n    \})");
+        
+        this.writeFileFromString(routeFile, 'app/client/scripts/router.js');
+    },
+
+    generateRouterFile: function() {
+        
+        if (this.includeRouterFile) {
+            
+            this.copy('base_router.js',
+                          'app/client/scripts/router.js');
+
+            this.log(chalk.green('router.js created, you can add your route now.'));
+                
+        }
     }
+    
 });
 
 module.exports = EmberFullstackRouteGenerator;

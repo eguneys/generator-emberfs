@@ -1,19 +1,18 @@
 /*global describe, beforeEach, it */
 'use strict';
 var path = require('path');
+var fs = require('fs-extra');
 
 var helpers = require('yeoman-generator').test;
 var assert = require('yeoman-generator').assert;
 var chai = require('chai');
 var expect = chai.expect;
 
+var lessStackTrace = require('../test-util');
+
 
 describe('ember-fullstack:route generator', function () {
     
-    var defaultOptions = {
-        'lazy-load': false
-    };
-
     var defaultArgs = ['Test'];
     
     beforeEach(function() {
@@ -24,10 +23,10 @@ describe('ember-fullstack:route generator', function () {
     });
 
 
-    describe('with default options', function() {
+    describe('with --skip-inject=true', function() {
         it('should generate expected files', function(done) {
             this.app_route
-                .withOptions(defaultOptions)
+                .withOptions({'skip-inject':true})
                 .withArguments(defaultArgs)
                 .on('end', function() {
 
@@ -51,7 +50,7 @@ describe('ember-fullstack:route generator', function () {
     describe('with --lazy-load=true', function() {
         it('should generate expected files', function(done) {
             this.app_route
-                .withOptions({'lazy-load':true})
+                .withOptions({'lazy-load':true, 'skip-inject': true})
                 .withArguments(defaultArgs)
                 .on('end', function() {
 
@@ -66,5 +65,78 @@ describe('ember-fullstack:route generator', function () {
                     done();
                 });
         });        
+    });
+
+    describe('with default options', function() {
+        describe('when no router.js file present', function() {
+            it('should generate expected files', function(done) {
+                this.app_route
+                    .withArguments(defaultArgs)
+                    .withPrompt({routerFile: true})
+                    .on('end', function() {
+
+                        assert.file([
+                            'app/client/scripts/routes/test_route.js'
+                        ]);
+
+                        assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
+
+                        assert.noFileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
+
+                        assert.noFile([
+                            'app/client/scripts/routes/test_deps.js'
+                        ]);
+
+                        assert.file('app/client/scripts/router.js');
+                        
+                        done();
+                    });
+            });
+        });
+
+        describe('when router.js file present', function() {
+            beforeEach(function() {
+                this.app_route.inDir(path.join(__dirname, '.tmp'), function(dir) {
+                    fs.copySync(path.join(__dirname, 'fixtures/base_router.js'), path.join(dir, 'app/client/scripts/router.js'));
+                    
+                });
+                
+                // helpers
+                //     .run(path.join(__dirname, '../generators/route'))
+                //     .inDir(path.join(__dirname, '.tmp'))
+                //     .withArguments(defaultArgs)
+                //     .withPrompt({routerFile: true})
+                //     .on('end', function() {
+                //         done();
+                //     });
+            });
+            
+            it('should generate expected files and inject route', function(done) {
+                
+                this.app_route
+                    .withArguments(defaultArgs)
+                    .on('end', function() {
+
+                        assert.file([
+                            'app/client/scripts/routes/test_route.js'
+                        ]);
+
+                        assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
+
+                        assert.noFileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
+
+                        assert.noFile([
+                            'app/client/scripts/routes/test_deps.js'
+                        ]);
+
+                        assert.file('app/client/scripts/router.js');
+                        
+                        assert.fileContent('app/client/scripts/router.js',
+                                           /(map\(function\(\) {[\s\S]+?)\n {8}this.route\('test'\);\n {4}\}\)/);
+                        
+                        done();
+                    });
+            });
+        });
     });
 });
