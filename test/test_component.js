@@ -8,17 +8,17 @@ var chai = require('chai');
 var expect = chai.expect;
 
 
-describe('ember-fullstack:template generator', function () {
+describe('ember-fullstack:component generator', function () {
     
     var defaultOptions = {
     };
 
-    var defaultArgs = 'Test';
+    var defaultArgs = 'Test-test';
     
     beforeEach(function() {
         this.timeout(10000);
         this.app_template = helpers
-            .run(path.join(__dirname, '../generators/template'))
+            .run(path.join(__dirname, '../generators/component'))
             .inDir(path.join(__dirname, '.tmp'));
     });
 
@@ -29,27 +29,16 @@ describe('ember-fullstack:template generator', function () {
             .on('end', function() {
 
                 assert.file([
-                    'app/client/templates/test.hbs'
+                    'app/client/scripts/components/test-test.js',
+                    'app/client/templates/components/test-test.hbs'
                 ]);
+
+                assert.fileContent(
+                    'app/client/scripts/components/test-test.js',
+                    /TestTestComponent = Ember\.Component/
+                );
 
                 done();
             });
-    });
-
-    describe('with --partial=true', function() {
-        
-        it('should generate expected files', function(done) {
-            this.app_template.withPrompt(defaultOptions)
-                .withArguments(defaultArgs)
-                .withOptions({partial:true})
-                .on('end', function() {
-
-                    assert.file([
-                        'app/client/templates/_test.hbs'
-                    ]);
-
-                    done();
-                });
-        });
     });
 });
