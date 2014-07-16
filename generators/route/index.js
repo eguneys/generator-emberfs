@@ -51,6 +51,7 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
 
         if (this.options['lazy-load']) {
             this.mkdir('app/client/templates/' + slugName);
+            this.copy('index_template.hbs', 'app/client/templates/' + slugName + '/index.hbs');
         }
     },
 

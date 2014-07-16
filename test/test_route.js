@@ -60,7 +60,8 @@ describe('ember-fullstack:route generator', function () {
                     assert.file([].concat(
                         defaultExpectedFiles,
                         'app/client/scripts/routes/test_deps.js',
-                        'app/client/templates/test'
+                        'app/client/templates/test',
+                        'app/client/templates/test/index.hbs'
                     ));
 
                     assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
