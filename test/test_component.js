@@ -30,12 +30,23 @@ describe('emberfs:component generator', function () {
 
                 assert.file([
                     'app/client/scripts/components/test-test.js',
-                    'app/client/templates/components/test-test.hbs'
+                    'app/client/templates/components/test-test.hbs',
+                    'tests/unit/components/test-test-test.js'
                 ]);
 
                 assert.fileContent(
                     'app/client/scripts/components/test-test.js',
                     /TestTestComponent = Ember\.Component/
+                );
+
+                assert.fileContent(
+                    'tests/unit/components/test-test-test.js',
+                    /define\(\['components\/test\-test'\], /
+                );
+
+                assert.fileContent(
+                    'tests/unit/components/test-test-test.js',
+                    /moduleForComponent\('component:test\-test', 'TestTest Component', \{/
                 );
 
                 done();

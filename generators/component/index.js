@@ -17,7 +17,8 @@ var EmberFullstackComponentGenerator = yeoman.generators.NamedBase.extend({
         this.template('base.js', 'app/client/scripts/components/' + slugName + '.js');
 
         this.template('base_template.js', 'app/client/templates/components/' + slugName + '.hbs');
-        
+
+        this.template('_test.js', 'tests/unit/components/' + slugName + '-test.js');
     }
 });
 

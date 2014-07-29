@@ -22,6 +22,8 @@ var EmberFullstackControllerGenerator = yeoman.generators.NamedBase.extend({
         var slugName = this._.slugify(this.name);
         
         this.template('base.js', 'app/client/scripts/controllers/' + slugName + '_controller.js');
+
+        this.template('_test.js', 'tests/unit/controllers/' + slugName + '-test.js');
     }
 });
 

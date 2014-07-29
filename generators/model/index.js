@@ -22,6 +22,8 @@ var EmberFullstackModelGenerator = yeoman.generators.NamedBase.extend({
         var slugName = this._.slugify(this.name);
         
         this.template('base.js', 'app/client/scripts/models/' + slugName + '_model.js');
+
+        this.template('_test.js', 'tests/unit/models/' + slugName + '-test.js');
     }
 });
 

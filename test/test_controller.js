@@ -29,11 +29,18 @@ describe('emberfs:controller generator', function () {
             .on('end', function() {
 
                 assert.file([
-                    'app/client/scripts/controllers/test_controller.js'
+                    'app/client/scripts/controllers/test_controller.js',
+                    'tests/unit/controllers/test-test.js'
                 ]);
 
                 assert.fileContent('app/client/scripts/controllers/test_controller.js',
                                    /App.TestController = Ember.ObjectController/);
+
+                assert.fileContent('tests/unit/controllers/test-test.js',
+                                   /define\(\['controllers\/test'\], /);
+                
+                assert.fileContent('tests/unit/controllers/test-test.js',
+                                   /moduleFor\('controller:test', 'Test Controller', \{/);
                 
                 done();
             });

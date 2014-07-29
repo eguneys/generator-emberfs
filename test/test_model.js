@@ -29,7 +29,8 @@ describe('emberfs:model generator', function () {
             .on('end', function() {
 
                 assert.file([
-                    'app/client/scripts/models/test_model.js'
+                    'app/client/scripts/models/test_model.js',
+                    'tests/unit/models/test-test.js'
                 ]);
 
                 assert.fileContent('app/client/scripts/models/test_model.js', /App.Test = DS.Model/);
@@ -42,6 +43,14 @@ describe('emberfs:model generator', function () {
 
                 assert.fileContent('app/client/scripts/models/test_model.js',
                                    /{\n {12}id: '0',\n {12}name: 'foo',\n {12}zipcode: 'foo',\n {12}address: 'foo'\n {8}\}\n/);
+
+
+                // unit test
+                assert.fileContent('tests/unit/models/test-test.js',
+                                   /define\(\['models\/test'\], /);
+                
+                assert.fileContent('tests/unit/models/test-test.js',
+                                   /moduleForModel\('model:test', 'Test Model', \{/);
                 
                 done();
             });
