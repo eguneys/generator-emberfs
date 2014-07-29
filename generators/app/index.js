@@ -62,8 +62,8 @@ var EmberFullstackGenerator = yeoman.generators.Base.extend({
         this.copy('bowerrc', '.bowerrc');
         this.template('_package.json', 'package.json');
         this.copy('_bower.json', 'bower.json');
+        this.copy('_testem.json', 'testem.json');
         this.template('gulpfile.js');
-        
     },
 
     generateClient: function() {
@@ -78,6 +78,7 @@ var EmberFullstackGenerator = yeoman.generators.Base.extend({
 
         genUtils.processDirectory(this, 'config', 'config');
 
+        genUtils.processDirectory(this, 'tests', 'tests');
     },
     
     generateServer: function() {

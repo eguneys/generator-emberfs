@@ -10,7 +10,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 
-describe('ember-fullstack generator', function () {
+describe('emberfs generator', function () {
     
     var defaultOptions = {
     };
@@ -18,88 +18,35 @@ describe('ember-fullstack generator', function () {
     beforeEach(function() {
         this.app = helpers
             .run(path.join(__dirname, '../generators/app'))
-            .inDir(path.join(__dirname, '.tmp'));
-    });
+            .inDir(path.join(__dirname, '.tmp'), function(dir) {
+                //node_modulesx
+                // fs.copySync(path.join(__dirname, 'fixtures/node_modules'),
+                //             path.join(dir, 'node_modules'));
+                //bower_components
 
-    it('should generate expected files', function(done) {
-        this.timeout(10000);
-        this.app.withPrompt(defaultOptions)
-            .on('end', function() {
+                // node_modules
+                fs.symlinkSync(path.join(__dirname, 'fixtures/node_modules'),
+                               path.join(dir, 'node_modules'), 'dir');
 
-                // project files
-                assert.file([
-                    '.gitignore',
-                    '.jshintrc',
-                    '.bowerrc',
-                    'package.json',
-                    'bower.json',
-                    'gulpfile.js'
-                ]);
 
-                // client files
-                assert.file([
-                    // app/client
-                    'app/client/favicon.ico',
-                    'app/client/robots.txt',
-                    // app/client/styles
-                    'app/client/styles/reset.scss',
-                    'app/client/styles/style.scss',
-                    'app/client/styles/layout/footer.scss',
-                    'app/client/styles/pages/home.scss',
-                    // app/client/templates
-                    'app/client/templates/_nav-main.hbs',
-                    'app/client/templates/catchall.hbs',
-                    'app/client/templates/application.hbs',
-                    'app/client/templates/index.hbs',
-                    'app/client/templates/guides.hbs',
-                    'app/client/templates/guides/_guide.hbs',
-                    'app/client/templates/guides/guide.hbs',
-                    'app/client/templates/guides/index.hbs',
-                    // app/client/scripts
-                    'app/client/scripts/common.js',
-                    'app/client/scripts/main.js',
-                    'app/client/scripts/app.js',
-                    'app/client/scripts/router.js',
-                    'app/client/scripts/routes/index_route.js',
-                    'app/client/scripts/routes/index_deps.js',
-                    'app/client/scripts/routes/guides_route.js',
-                    'app/client/scripts/routes/guides_deps.js',
-                    'app/client/scripts/models/feature.js',
-                    'app/client/scripts/models/guide.js',
-                    'app/client/scripts/controllers/features_controller.js',
-                    'app/client/scripts/controllers/features_controller.js',
-                    'app/client/scripts/controllers/guide_controller.js',
-                    'app/client/scripts/mixins/lazy_loader_mixin.js',
-                    'app/client/scripts/views',
-                    'app/client/vendor'
-                ]);
+                fs.mkdirpSync(path.join(dir, 'app/client'));
 
-                // server files
-                assert.file([
-                    'app/views/index.hbs',
-                    'app/views/layouts/main.hbs',
-                    'config/server.js'
-                ]);
-            
-                done();
+                // bower_components
+                fs.symlinkSync(path.join(__dirname, 'fixtures/bower_components'),
+                               path.join(dir, 'app/client/bower_components'), 'dir');
+
             });
     });
 
     describe('running app', function() {
-        beforeEach(function() {
-            this.app.inDir(path.join(__dirname, '.tmp'), function(dir) {
-                //node_modules
-                fs.copySync(path.join(__dirname, 'fixtures/node_modules'),
-                            path.join(dir, 'node_modules'));
-                //bower_components
-            });
-        });
+
         describe('with default options', function() {
 
             it('should pass jshint', function(done) {
                 this.timeout(20000);
                 this.app.withPrompt(defaultOptions)
                     .on('end', function() {
+                        console.log('running jshint');
                         exec('gulp jshint', function(error, stdout, stderr) {
                             expect(stdout).to.contain('Finished \'jshint\'');
                             expect(stdout).to.not.contain('problems');
@@ -107,7 +54,20 @@ describe('ember-fullstack generator', function () {
                             done();
                         });
                     });
-                
+            });
+
+            it('should pass all client tests', function(done) {
+                this.timeout(600000);
+                this.app.withPrompt(defaultOptions)
+                    .on('end', function() {
+                        console.log('running client side tests');
+                        exec('gulp test', function(error, stdout, stderr) {
+                            expect(stdout).to.match(/# tests\s*3/);
+                            expect(stdout).to.match(/# pass\s*3/);
+                            expect(stdout).to.match(/# fail\s*0/);
+                            done();
+                        });
+                    });
             });
         });
     });

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<title>Test'em</title>
+<script src="/testem/qunit.js"></script>
+<script src="/testem.js"></script>
+<link rel="stylesheet" href="/testem/qunit.css"/>
+<script src="../public/assets/scripts/lib/requirejs/require.js"></script>
+<link rel="stylesheet" href="../public/assets/styles/main.css">
+</head>
+<body>
+<h1 id="qunit-header">Tests</h1>
+<h2 id="qunit-banner"></h2>
+<div id="qunit-testrunner-toolbar"></div>
+<h2 id="qunit-userAgent"></h2>
+<ol id="qunit-tests"></ol>
+<div id="qunit-fixture"></div>
+
+<div id="ember-fixture"></div>
+
+<script>
+ QUnit.config.autostart = false;
+ var files = [];
+ {{#serve_files}} if ("{{src}}".match(/^test.*test.js$/)) { files.push("../{{src}}"); } {{/serve_files}}
+
+ require(['../tests/test-setup.js'], function() {
+   
+   require(['app/app', 'app/main'], function(App) {
+     App.rootElement = "#ember-fixture";
+     App.setupForTesting();
+     App.injectTestHelpers();
+
+     require(['ember-qunit', 'ember'], function(emq, Ember) {
+       emq.globalize();
+
+       setResolver(Ember.DefaultResolver.create({namespace: App}));
+       
+       require(files, function() {
+         QUnit.start();
+       });
+     });
+   });
+ });
+</script>
+
+</body>
+</html>

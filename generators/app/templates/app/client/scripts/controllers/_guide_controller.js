@@ -1,4 +1,8 @@
 define(['ember', 'app/app'], function(Ember, App) {
+    App.GuidesController = Ember.ArrayController.extend({
+        
+    });
+    
     App.GuidesGuideController = Ember.ObjectController.extend({
         needs: 'guides',
 

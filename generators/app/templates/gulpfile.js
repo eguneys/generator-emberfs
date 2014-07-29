@@ -1,6 +1,6 @@
 'use strict';
 
-// npm install --save-dev gulp gulp-load-plugins gulp-util gulp-autoprefixer gulp-cache gulp-imagemin gulp-bower-files gulp-filter gulp-ignore gulp-flatten gulp-csso gulp-useref gulp-if gulp-uglify gulp-rimraf gulp-size gulp-jshint jshint-stylish gulp-livereload gulp-nodemon wiredep bower-requirejs requirejs gulp-debug gulp-changed gulp-concat gulp-ember-templates gulp-insert gulp-plumber merge-stream gulp-sass gulp-grep-stream rimraf mv
+// npm install --save-dev gulp gulp-load-plugins gulp-util gulp-autoprefixer gulp-cache gulp-imagemin gulp-bower-files gulp-filter gulp-ignore gulp-flatten gulp-csso gulp-useref gulp-if gulp-uglify gulp-rimraf gulp-size gulp-jshint jshint-stylish gulp-livereload gulp-nodemon wiredep bower-requirejs requirejs gulp-debug gulp-changed gulp-concat gulp-ember-templates gulp-insert gulp-plumber merge-stream gulp-sass gulp-grep-stream gulp-rename rimraf mv
 
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
@@ -8,17 +8,14 @@ var runSequence = require('run-sequence');
 var rimraf = require('rimraf');
 var mv = require('mv');
 
+// npm install --save-dev testem
+var testem = require('testem');
+
 var paths = {
     src: {
         common: 'app/client'
     },
     dev_dist: 'public/assets'
-};
-
-var templatePaths = {
-    './': 'common',
-    'home': 'home',
-    'guides': 'guides'
 };
 
 /*** BUILD ***/
@@ -37,7 +34,6 @@ gulp.task('build-dev-sass', function() {
         }))
         .pipe($.concat('main.css'))
         .pipe($.autoprefixer('last 1 version'))
-      //.pipe(gulp.dest('.tmp/styles'));
         .pipe(gulp.dest(paths.dev_dist + '/styles'));
 });
 
@@ -69,34 +65,42 @@ gulp.task('build-dev-extras', function() {
 });
 
 gulp.task('build-dev-templates', function() {
+    var mergeStream = require('merge-stream');
+    var fs = require('fs');
+
     var amdModulePrefix = 'define(["ember"], function(Ember) {',
         amdModulePostfix = '});';
 
-    var mergeStream = require('merge-stream')();
+
+    var directoryFilter = $.filter(function (file) { return file.isDirectory(); });
+
+    var dFilter2 = fs.readdirSync(paths.src.common + '/templates').filter(function(name) {
+        return fs.statSync(paths.src.common + '/templates/' + name).isDirectory();
+    });
+
+    dFilter2.push('.');
     
-    for (var src in templatePaths) {
-        var dst = templatePaths[src];
-        var stream = gulp.src([paths.src.common + '/templates/' + src + '**/*.hbs'])
+    var streams = dFilter2.map(function(name) {
+
+        var srcGlob = name==='.'?'*.hbs':(name + '/**/*.hbs');
+        var dst = name==='.'?'common':name;
+        var rightPath = name==='.'?'':dst + '/';
+        
+        var renameToRightPath = $.rename(function(path) { path.dirname = rightPath + path.dirname; });
+        
+        return gulp.src(paths.src.common + '/templates/' + srcGlob)
             .pipe($.plumber())
+            .pipe(renameToRightPath)
+             //.pipe($.filter(function(f) { console.log(f); }))
             .pipe($.emberTemplates({
                 type: 'browser'
             }))
             .pipe($.concat(dst + '.js'))
             .pipe($.insert.wrap(amdModulePrefix, amdModulePostfix))
             .pipe(gulp.dest(paths.dev_dist + '/templates'));
-
-        mergeStream.add(stream);
-    }
-    return mergeStream;
-});
-
-gulp.task('build-dev-templates2', function() {
-    return gulp.src([paths.src.common + '/templates/**/*.hbs'])
-        .pipe($.emberTemplates({
-            type: 'amd'
-        }))
-        .pipe($.concat('common.js'))
-        .pipe(gulp.dest(paths.dev_dist + '/templates'));
+    });
+    
+    return mergeStream(streams);
 });
 
 gulp.task('build-dev-commonjs', ['jshint'], function() {
@@ -107,7 +111,7 @@ gulp.task('build-dev-commonjs', ['jshint'], function() {
 
 gulp.task('build-dev-mainjs', ['jshint'], function() {
     return gulp.src([paths.src.common + '/scripts/**/*.js'])
-        .pipe($.changed(paths.dev_dist + '/scripts'))
+        .pipe($.changed(paths.dev_dist + '/scripts/app'))
         .pipe(gulp.dest(paths.dev_dist + '/scripts/app'));
 });
 
@@ -140,10 +144,10 @@ gulp.task('build-requirejs', ['build-scripts', 'build-styles'], function(cb) {
 
     requirejs.optimize(config, function(response) {
         rimraf(paths.dev_dist, function() {
-            // mv(paths.dev_dist + '2', paths.dev_dist, function() {
-            //     cb();
-            // });
-            cb();
+            mv(paths.dev_dist + '2', paths.dev_dist, function() {
+                cb();
+            });
+            //cb();
         });
     });
 });
@@ -151,10 +155,6 @@ gulp.task('build-requirejs', ['build-scripts', 'build-styles'], function(cb) {
 //----
 // Build Tasks
 //----
-
-gulp.task('build-optimize', ['build-requirejs'], function () {
-    
-});
 
 gulp.task('build-styles', ['build-dev-sass', 'build-dev-fonts', 'build-dev-images', 'build-dev-extras']);
 
@@ -164,7 +164,18 @@ gulp.task('build-dev-styles', ['build-dev-sass', 'build-dev-fonts', 'build-dev-i
 
 gulp.task('build-dev-scripts', ['build-dev-commonjs', 'build-dev-mainjs', 'build-dev-templates']);
 
-gulp.task('build-dev', ['build-dev-scripts', 'build-dev-styles']);
+gulp.task('build-dev', function(cb) {
+    runSequence('clean',
+                ['build-dev-scripts',
+                 'build-dev-styles'],
+                cb);
+});
+
+gulp.task('build-optimize', function (cb) {
+    runSequence('clean',
+                ['build-requirejs'],
+                cb);
+});
 
 gulp.task('build', ['build-optimize'], function() {
     return gulp.src(paths.dev_dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
@@ -177,14 +188,9 @@ gulp.task('build', ['build-optimize'], function() {
 // run clean manually
 //gulp.task('server', ['build', 'watch']);
 
-gulp.task('devserver', function(cb) {
-    runSequence('clean',
-                ['build-dev',
-                 'watch-devserver'],
-                cb);
-});
+gulp.task('devserver', ['build-dev', 'watch-devserver']);
 
-
+gulp.task('devtdd', ['build-dev', 'watch-devserver', 'tdd']);
 
 /*** SERVE / WATCH / RELOAD ***/
 
@@ -235,6 +241,9 @@ gulp.task('wiredep', function() {
 
 gulp.task('serve', ['build-dev'], function() {
     $.nodemon({ script: 'config/server.js',
+                ignore: [
+                    'node_modules/*'
+                ],
                 watch: [
                     'config/**/*.js',
                     'lib'
@@ -271,4 +280,26 @@ gulp.task('watch-devserver', ['serve'], function() {
                                     '\nRestart the Gulp process' +
                                     '\n----------'));
     });
+});
+
+/*** TEST ***/
+gulp.task('test', ['build'], function(done) {
+    var testemOptions = {
+        file: 'testem.json'
+    };
+
+    var t = new testem();
+    
+    t.startCI(testemOptions, done);
+});
+
+
+gulp.task('tdd', ['build-dev'], function(done) {
+    var testemOptions = {
+        file: 'testem.json'
+    };
+
+    var t = new testem();
+
+    t.startDev(testemOptions, done);
 });

@@ -11,7 +11,7 @@ var expect = chai.expect;
 var lessStackTrace = require('../test-util');
 
 
-describe('ember-fullstack:route generator', function () {
+describe('emberfs:route generator', function () {
     
     var defaultArgs = ['Test'];
 

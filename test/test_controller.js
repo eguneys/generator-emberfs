@@ -8,7 +8,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 
-describe('ember-fullstack:controller generator', function () {
+describe('emberfs:controller generator', function () {
     
     var defaultOptions = {
     };

@@ -15,7 +15,7 @@
   },
   "scripts": {
       "test": "mocha --reporter spec",
-      "test-lite": "mocha --reporter spec -g 'ember-fullstack generator' -i"
+      "test-lite": "mocha --reporter spec -g 'emberfs generator' -i"
   },
   "files": [
     "app"

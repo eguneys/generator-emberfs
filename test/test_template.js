@@ -8,7 +8,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 
-describe('ember-fullstack:template generator', function () {
+describe('emberfs:template generator', function () {
     
     var defaultOptions = {
     };

@@ -114,11 +114,7 @@ You can install new packages with bower, they will be available in your requirej
 
 ## Testing
 
-Running `gulp test` will run the client and server unit tests with qunit. // TODO
-
-Use `gulp test-server` to only run server tests.
-
-Use `gulp test-client` to only run client tests.
+// TODO
 
 ## Environment Variables
 
@@ -128,25 +124,7 @@ Use `gulp test-client` to only run client tests.
 
 Overview
 
-// TODO tree
-.
-|-- app                         
-|   |-- client                  - Client side application assets
-|   |   |-- scripts             - Client side scripts
-|   |   |   |-- controllers
-|   |   |   |-- mixins
-|   |   |   |-- models
-|   |   |   |-- routes
-|   |   |   `-- views
-|   |   |-- styles              - Client side styles
-|   |   |   |-- layout
-|   |   |   `-- pages
-|   |   |-- templates           - Client side templates
-|   |   |   `-- guides
-|   |   `-- vendor              - Client side vendor assets
-|   `-- views                   - Server side view templates
-|       `-- layouts
-`-- config                      - Server side configuration files
+// TODO
 
 ## Contribute
 
