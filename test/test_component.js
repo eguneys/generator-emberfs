@@ -46,7 +46,7 @@ describe('emberfs:component generator', function () {
 
                 assert.fileContent(
                     'tests/unit/components/test-test-test.js',
-                    /moduleForComponent\('component:test\-test', 'TestTest Component', \{/
+                    /moduleForComponent\('test\-test', 'TestTest Component', \{/
                 );
 
                 done();

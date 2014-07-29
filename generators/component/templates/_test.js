@@ -1,5 +1,5 @@
 define(['components/<%= _.slugify(name) %>'], function() {
-    moduleForComponent('component:<%= _.slugify(name) %>', '<%= _.classify(name) %> Component', {
+    moduleForComponent('<%= _.slugify(name) %>', '<%= _.classify(name) %> Component', {
        needs: [] 
     });
     

@@ -37,7 +37,7 @@ describe('emberfs:controller generator', function () {
                                    /App.TestController = Ember.ObjectController/);
 
                 assert.fileContent('tests/unit/controllers/test-test.js',
-                                   /define\(\['controllers\/test'\], /);
+                                   /define\(\['controllers\/test_controller'\], /);
                 
                 assert.fileContent('tests/unit/controllers/test-test.js',
                                    /moduleFor\('controller:test', 'Test Controller', \{/);

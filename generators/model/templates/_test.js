@@ -1,5 +1,5 @@
-define(['models/<%= _.slugify(name) %>'], function() {
-    moduleForModel('model:<%= _.slugify(name) %>', '<%= _.classify(name) %> Model', {
+define(['models/<%= _.slugify(name) %>_model'], function() {
+    moduleForModel('<%= _.slugify(name) %>', '<%= _.classify(name) %> Model', {
        needs: [] 
     });
     

@@ -47,10 +47,10 @@ describe('emberfs:model generator', function () {
 
                 // unit test
                 assert.fileContent('tests/unit/models/test-test.js',
-                                   /define\(\['models\/test'\], /);
+                                   /define\(\['models\/test_model'\], /);
                 
                 assert.fileContent('tests/unit/models/test-test.js',
-                                   /moduleForModel\('model:test', 'Test Model', \{/);
+                                   /moduleForModel\('test', 'Test Model', \{/);
                 
                 done();
             });

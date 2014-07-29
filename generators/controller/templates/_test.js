@@ -1,4 +1,4 @@
-define(['controllers/<%=_.slugify(name)%>'], function() {
+define(['controllers/<%=_.slugify(name)%>_controller'], function() {
     moduleFor('controller:<%= _.slugify(name) %>', '<%= _.classify(name) %> Controller', {
         needs: []
     });
