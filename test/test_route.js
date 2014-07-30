@@ -50,30 +50,8 @@ describe('emberfs:route generator', function () {
         });
     });
 
-    describe('with --lazy-load=true', function() {
-        it('should generate expected files', function(done) {
-            this.app_route
-                .withOptions({'lazy-load':true, 'skip-inject': true})
-                .withArguments(defaultArgs)
-                .on('end', function() {
+    describe('with default options', function(done) {
 
-                    assert.file([].concat(
-                        defaultExpectedFiles,
-                        'app/client/scripts/routes/test_deps.js',
-                        'app/client/templates/test',
-                        'app/client/templates/test/index.hbs'
-                    ));
-
-                    assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
-                    assert.fileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
-
-                    assert.fileContent('app/client/scripts/routes/test_deps.js', /'templates\/test'/);
-                    done();
-                });
-        });        
-    });
-
-    describe('with default options', function() {
         describe('when router.js file is not present', function() {
             it('should generate expected files', function(done) {
                 this.app_route
@@ -101,7 +79,7 @@ describe('emberfs:route generator', function () {
             });
         });
 
-        describe('when router.js file present', function() {
+        describe.only('when router.js file present', function() {
             beforeEach(function() {
                 this.app_route.inDir(path.join(__dirname, '.tmp'), function(dir) {
                     fs.copySync(path.join(__dirname, 'fixtures/base_router.js'), path.join(dir, 'app/client/scripts/router.js'));
@@ -141,6 +119,9 @@ describe('emberfs:route generator', function () {
                         
                         assert.fileContent('app/client/scripts/router.js',
                                            /map\(function\(\) {[\s\S]+?\n? {8}this.route\('test'\);\n {4}\}\)/);
+
+                        assert.fileContent('app/client/scripts/router.js',
+                                           /define\(\[[\s\S]+?'routes\/test_route'\], function/);
                         
                         done();
                     });
@@ -162,4 +143,40 @@ describe('emberfs:route generator', function () {
             });
         });
     });
+    
+    describe('with --lazy-load=true', function() {
+        beforeEach(function() {
+            this.app_route
+                .inDir(path.join(__dirname, '.tmp'), function(dir) {
+                    fs.copySync(path.join(__dirname, 'fixtures/gulpfile.js'), dir + '/gulpfile.js');
+                });
+        });
+        
+        it('should generate expected files', function(done) {
+            this.app_route
+                .withOptions({'lazy-load':true})
+                .withArguments(defaultArgs)
+                .on('end', function() {
+
+                    assert.file([].concat(
+                        defaultExpectedFiles,
+                        'app/client/scripts/routes/test_deps.js',
+                        'app/client/templates/test',
+                        'app/client/templates/test/index.hbs'
+                    ));
+
+                    assert.fileContent('app/client/scripts/routes/test_route.js', /App.TestRoute = Ember.Route/);
+                    assert.fileContent('app/client/scripts/routes/test_route.js', /requireLists: \['routes\/test_deps'\]/);
+
+                    assert.fileContent('app/client/scripts/routes/test_deps.js', /'templates\/test'/);
+
+                    // gulpfile requirejs modules injection
+                    assert.fileContent('gulpfile.js',
+                                       /gulp.task\('build-requirejs',[\s\S]*modules: \[[\s\S]+?\n? {12}\{[\s\S]+name: 'routes\/test_deps',[\s]+exclude: \['app\/common'][\s]+}[\s]+\]/);
+                    
+                    done();
+                });
+        });        
+    });
+
 });

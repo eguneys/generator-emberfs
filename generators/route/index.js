@@ -90,8 +90,37 @@ var EmberFullstackRouteGenerator = yeoman.generators.NamedBase.extend({
         routeFile = routeFile.replace(
                 /(map\(function\(\) {[\s\S]+?)\n {4}\}\)/,
             "$1\n        this.route(" + inRouteText + ");\n    \})");
+
+        routeFile = routeFile.replace(
+            /(define\(\[[\s\S]+?)[\s]?\], function/,
+            "$1, 'routes/" + slugName + "_route'\], function");
         
         this.writeFileFromString(routeFile, 'app/client/scripts/router.js');
+    },
+
+    injectRequireJSConfig: function() {
+        if (this.options['skip-inject'] || !this.options['lazy-load']) { return; }
+        
+        var slugName = this._.slugify(this.name),
+            gulpFile,
+            moduleText = 'routes\/' + slugName + '_deps';
+
+        try {
+
+            gulpFile = this.readFileAsString('gulpfile.js');
+        } catch(e) {
+
+            var done = this.async();
+            this.log(chalk.red('Cannot read gulpfile.js.\n'));
+            return;
+        }
+        
+        // https://github.com/stefanpenner/ember-cli/blob/master/blueprints/route/index.js
+        
+        gulpFile = gulpFile.replace(/(gulp.task\('build-requirejs',[\s\S]*modules: \[[\s\S]+?)[\s]+\]/,
+        "$1,\n            \{\n                name: '" + moduleText + "',\n                exclude: \['app\/common']\n            }\n        ]");
+        
+        this.writeFileFromString(gulpFile, 'gulpfile.js');
     },
 
     generateRouterFile: function() {
