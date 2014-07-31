@@ -16,6 +16,7 @@ describe('emberfs generator', function () {
     };
     
     beforeEach(function(done) {
+        this.timeout(1200000);
         this.app = helpers
             .run(path.join(__dirname, '../generators/app'))
             .inDir(path.join(__dirname, '.tmp'), function(dir) {
