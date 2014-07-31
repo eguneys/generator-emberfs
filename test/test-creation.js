@@ -15,7 +15,7 @@ describe('emberfs generator', function () {
     var defaultOptions = {
     };
     
-    beforeEach(function() {
+    beforeEach(function(done) {
         this.app = helpers
             .run(path.join(__dirname, '../generators/app'))
             .inDir(path.join(__dirname, '.tmp'), function(dir) {
@@ -38,6 +38,8 @@ describe('emberfs generator', function () {
                 exec('npm install & bower install', { cwd: path.join(__dirname, 'fixtures') }, function(error) {
                     console.log('running npm install & bower install on fixtures');
                     if (error) { console.log('Error: ' + error); }
+
+                    done();
                 });
             });
     });

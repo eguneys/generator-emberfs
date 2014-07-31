@@ -1,5 +1,4 @@
-# generator-emberfs
-  [![Build Status](https://travis-ci.org/eguneys/generator-emberfs.svg?branch=master)](https://travis-ci.org/eguneys/generator-emberfs)
+# generator-emberfs  [![Build Status](https://travis-ci.org/eguneys/generator-emberfs.svg?branch=master)](https://travis-ci.org/eguneys/generator-emberfs)
 
 > Yeoman generator for creating MEAN stack applications, using
   Express, Ember, RequireJS and Gulp build tool - lets you quickly set
