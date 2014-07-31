@@ -43,11 +43,12 @@ describe('emberfs generator', function () {
         describe('with default options', function() {
 
             it('should pass jshint', function(done) {
-                this.timeout(20000);
+                this.timeout(40000);
                 this.app.withPrompt(defaultOptions)
                     .on('end', function() {
                         console.log('running jshint');
                         exec('gulp jshint', function(error, stdout, stderr) {
+                            if (error) { console.log('Error: ' + error); }
                             expect(stdout).to.contain('Finished \'jshint\'');
                             expect(stdout).to.not.contain('problems');
                             
