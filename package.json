@@ -14,7 +14,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha --reporter spec",
+      "test": "mocha --reporter spec -g 'emberfs generator' -i",
+    "test-full": "mocha --reporter spec",
     "test-lite": "mocha --reporter spec -g 'emberfs generator' -i"
   },
   "files": [
