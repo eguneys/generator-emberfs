@@ -16,7 +16,7 @@ describe('emberfs generator', function () {
     };
     
     beforeEach(function(done) {
-        this.timeout(1200000);
+        this.timeout(2400000);
         this.app = helpers
             .run(path.join(__dirname, '../generators/app'))
             .inDir(path.join(__dirname, '.tmp'), function(dir) {
@@ -50,7 +50,7 @@ describe('emberfs generator', function () {
         describe('with default options', function() {
 
             it('should pass jshint', function(done) {
-                this.timeout(40000);
+                this.timeout(600000);
                 this.app.withPrompt(defaultOptions)
                     .on('end', function() {
                         console.log('running jshint');

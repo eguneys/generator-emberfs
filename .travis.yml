@@ -4,4 +4,4 @@ node_js:
 before_install:
   - currentfolder=${PWD##*/}
   - if [ "$currentfolder" != 'generator-emberfs' ]; then cd .. && eval "mv $currentfolder generator-emberfs" && cd generator-emberfs; fi
-
+  - npm install -g bower
