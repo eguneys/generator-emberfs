@@ -1,4 +1,4 @@
-# generator-ember-fullstack [![Build Status](https://secure.travis-ci.org/eguneys/generator-ember-fullstack.png?branch=master)](https://travis-ci.org/eguneys/generator-ember-fullstack)
+# generator-emberfs [![Build Status](https://secure.travis-ci.org/eguneys/generator-emberfs.png?branch=master)](https://travis-ci.org/eguneys/generator-emberfs)
 
 > Yeoman generator for creating MEAN stack applications, using
   Express, Ember, RequireJS and Gulp build tool - lets you quickly set
@@ -53,7 +53,7 @@ Available generators:
 
 * App
 
-  - [emberfs] (#app) (aka [emberfs:app](#app))
+    - [emberfs](#app) (aka [emberfs:app](#app))
   
 * Server side
 
@@ -61,12 +61,12 @@ Currently there are no server side generators.
 
 * Client Side
 
-  - [emberfs:route](#route)
-  - [emberfs:controller](#controller)
-  - [emberfs:model](#model)
-  - [emberfs:template](#template)
-  - [emberfs:component](#component)
-  - [emberfs:view](#view)
+    - [emberfs:route](#route)
+    - [emberfs:controller](#controller)
+    - [emberfs:model](#model)
+    - [emberfs:template](#template)
+    - [emberfs:component](#component)
+    - [emberfs:view](#view)
   
 * Deployment
 
@@ -97,9 +97,9 @@ By default it will inject the route to `router.js` file, visit:
 
 ####Options
 
-`--skip-inject` will skip the route injection.
+* `--skip-inject` will skip the route injection.
 
-`--lazy-load` this will scaffold a lazy route, that is, it's
+* `--lazy-load` this will scaffold a lazy route, that is, it's
 dependencies will be loaded only when the route is visited. For more
 information see:
 [gulp-ember-requirejs](https://github.com/eguneys/gulp-ember-requirejs).

@@ -79,7 +79,7 @@ describe('emberfs:route generator', function () {
             });
         });
 
-        describe.only('when router.js file present', function() {
+        describe('when router.js file present', function() {
             beforeEach(function() {
                 this.app_route.inDir(path.join(__dirname, '.tmp'), function(dir) {
                     fs.copySync(path.join(__dirname, 'fixtures/base_router.js'), path.join(dir, 'app/client/scripts/router.js'));

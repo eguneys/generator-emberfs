@@ -3,5 +3,5 @@ node_js:
   - '0.10'
 before_install:
   - currentfolder=${PWD##*/}
-  - if [ "$currentfolder" != 'generator-ember-fullstack' ]; then cd .. && eval "mv $currentfolder generator-ember-fullstack" && cd generator-ember-fullstack; fi
+  - if [ "$currentfolder" != 'generator-emberfs' ]; then cd .. && eval "mv $currentfolder generator-emberfs" && cd generator-emberfs; fi
 
