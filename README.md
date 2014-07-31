@@ -1,18 +1,21 @@
 # generator-ember-fullstack [![Build Status](https://secure.travis-ci.org/eguneys/generator-ember-fullstack.png?branch=master)](https://travis-ci.org/eguneys/generator-ember-fullstack)
 
-> Yeoman generator for creating MEAN stack applications, using Express, Ember, RequireJS and Gulp build tool - lets you quickly set up a project following best practices.
+> Yeoman generator for creating MEAN stack applications, using
+  Express, Ember, RequireJS and Gulp build tool - lets you quickly set
+  up a project following best practices.
 
 ## Example project
 
-https://github.com/TODO
+The project template is available at
+[gulp-ember-requirejs](https://github.com/eguneys/gulp-ember-requirejs).
 
 ## Getting Started
 
 ## Usage
 
-Install `generator-ember-fullstack`:
+Install `generator-emberfs`:
 ```bash
-npm install -g generator-ember-fullstack
+npm install -g generator-emberfs
 ```
 
 Make a new directory, and `cd` into it:
@@ -20,12 +23,14 @@ Make a new directory, and `cd` into it:
 mkdir my-new-project && cd $_
 ```
 
-Run `yo ember-fullstack`, optionally passing an app name:
+Run `yo emberfs`, optionally passing an app name:
 ```bash
-yo ember-fullstack [app-name]
+yo emberfs [app-name]
 ```
 
-Run `gulp` for building, `gulp devserver` for development, and `grunt build` for a preview of the built app. // TODO
+Run `gulp` for building, `gulp devserver` for development, and `gulp
+build` for a preview of the built app. For more commands see project
+template [gulp-ember-requirejs](https://github.com/eguneys/gulp-ember-requirejs).
 
 ## Supported Configurations
 
@@ -34,107 +39,110 @@ Run `gulp` for building, `gulp devserver` for development, and `grunt build` for
 * Scripts: `JavaScript`
 * Markup: `Handlebars`
 * Stylesheets: `Sass`
-// TODO
+* Modules: `RequireJS`
+* MVC: `EmberJS`
 
 **Server**
 
-// TODO
-
-## Injection // TODO
+* Framework: `Express`
+* View Engine: `Handlebars`
 
 ## Generators
 
 Available generators:
 
 * App
-  - [ember-fullstack] (#app) (aka [ember-fullstack:app](#app))
+
+  - [emberfs] (#app) (aka [emberfs:app](#app))
+  
 * Server side
-  // TODO
+
+Currently there are no server side generators.
+
 * Client Side
-  - [ember-fullstack:route](#route)
-  - [ember-fullstack:controller](#controller)
-  - [ember-fullstack:model](#model)
-  - [ember-fullstack:template](#template)
-  - [ember-fullstack:component](#component)
-  - [ember-fullstack:view](#view)
+
+  - [emberfs:route](#route)
+  - [emberfs:controller](#controller)
+  - [emberfs:model](#model)
+  - [emberfs:template](#template)
+  - [emberfs:component](#component)
+  - [emberfs:view](#view)
+  
 * Deployment
-  // TODO
+
+Currently there are no deployment generators.
 
 ### App
-Sets up a new EmberJS + Express app, generating all the boilerplate you need to get started.
 
-Example:
+Sets up a new EmberJS + Express app, generating all the boilerplate
+you need to get started.
+
 ```bash
-yo ember-fullstack
+$ yo emberfs
 ```
 
 ### Route
-Generated a new route.
 
-Example:
+Generates a new route.
+
 ```bash
-yo ember-fullstack:route myroute
-   [?] Where would you like to create this route? client/app
-   [?] What will the url of your route be? /myroute
+$ yo emberfs:route myroute
+   create app/client/scripts/routes/myroute_route.js
+   create app/client/templates/myroute.hbs
 ```
 
-Produces:
-   // TODO
-   client/app/myroute/myroute.js
+By default it will inject the route to `router.js` file, visit:
+
+`http://localhost:3000/myroute` to see the new route.
+
+####Options
+
+`--skip-inject` will skip the route injection.
+
+`--lazy-load` this will scaffold a lazy route, that is, it's
+dependencies will be loaded only when the route is visited. For more
+information see:
+[gulp-ember-requirejs](https://github.com/eguneys/gulp-ember-requirejs).
 
 ### Controller
+
 Generates a controller.
 
-Example:
 ```bash
-yo ember-fullstack:controller user
-   [?] Where would you like to create this controller? client/app
+$ yo emberfs:controller user
+   create app/client/scripts/controllers/user_controller.js
+   create tests/unit/controllers/user-test.js
 ```
 
-Produces:
-   client/app/user/userController.js
+### Model
 
-   ...
+Generates a model.
 
-## Bower Components
+`yo emberfs:model modelName field[:type] field[:type]`
 
-The following packages are installed by default
-
-    * ember
-    * ember-data
-    * jquery
-    * bootstrap
-    * font-awesome
-    // TODO
-
-You can install new packages with bower, they will be available in your requirejs paths config.
-
+```bash
+$ yo emberfs:model user
+   create app/client/scripts/models/user_model.js
+   create tests/unit/models/user-test.js
+```
 ## Configuration
 
-
-## Testing
-
-// TODO
-
-## Environment Variables
-
-// TODO
-
-## Project Structure
-
-Overview
-
-// TODO
+This generator is scaffolding support for gulp-ember-requirejs
+project. For more information about how to use the project see
+[gulp-ember-requirejs](https://github.com/eguneys/gulp-ember-requirejs).
 
 ## Contribute
 
-See the [contributing docs](https://TODO)
-
-When submitting an issue, please follow the [guidelines](https://TODO)
-
-When submitting a bugfix, try to write a test that exposes the bug and fails before applying your fix. Submit the test alongside the fix.
+When submitting a bugfix, try to write a test that exposes the bug and
+fails before applying your fix. Submit the test alongside the fix.
 
 When submitting a new feature, add tests that covers the feature.
+
+### Notes
+
+* in `generator-emberfs` directory, run `npm link` to use what's in the local repo for `yo emberfs`.
+* When running tests, run `npm install` and `bower install` inside
+`test/fixtures` folder.
 
 ## License
 
