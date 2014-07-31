@@ -35,6 +35,10 @@ describe('emberfs generator', function () {
                 fs.symlinkSync(path.join(__dirname, 'fixtures/bower_components'),
                                path.join(dir, 'app/client/bower_components'), 'dir');
 
+                exec('npm install & bower install', { cwd: path.join(__dirname + 'fixtures') }, function(error) {
+                    console.log('running npm install & bower install on fixtures');
+                    if (error) { console.log('Error: ' + error); }
+                });
             });
     });
 
@@ -56,7 +60,7 @@ describe('emberfs generator', function () {
                         });
                     });
             });
-
+            // pending for now, because gulp test doesn't exit properly
             xit('should pass all client tests', function(done) {
                 this.timeout(600000);
                 this.app.withPrompt(defaultOptions)
