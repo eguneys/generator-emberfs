@@ -16,7 +16,7 @@ describe('emberfs:test generator', function () {
     var defaultArgs = 'FirstTest';
 
     var defaultExpectedFiles = [
-        'tests/integration/firsttest-test.js'
+        'tests/integration/firsttest-test.coffee'
     ];
 
     beforeEach(function() {
@@ -33,6 +33,22 @@ describe('emberfs:test generator', function () {
                 .on('end', function() {
 
                     assert.file(defaultExpectedFiles);
+
+                    assert.fileContent('tests/integration/firsttest-test.coffee', /module 'Integration: Firsttest', {/);
+                    
+                    done();
+                });
+        });
+    });
+
+    describe('with --js option', function() {
+        it('should generate expected files', function(done) {
+            this.app_test.withPrompt(defaultOptions)
+                .withOptions({'js':true})
+                .withArguments(defaultArgs)
+                .on('end', function() {
+
+                    assert.file('tests/integration/firsttest-test.js');
 
                     assert.fileContent('tests/integration/firsttest-test.js', /module\('Integration: Firsttest', {/);
                     

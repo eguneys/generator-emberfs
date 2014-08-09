@@ -80,7 +80,8 @@ describe('emberfs:app generator', function () {
                     'tests/index.mustache',
                     'tests/test-setup.js',
                     'tests/integration/first-test.js',
-                    'tests/unit/controllers/first-test.js'
+                    'tests/unit/controllers/first-test.js',
+                    'tests/unit/controllers/second-test.coffee'
                 ]);
 
                 // server files

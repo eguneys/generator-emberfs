@@ -1,6 +1,12 @@
 {
     "framework": "qunit",
     "test_page": "tests/index.mustache",
+    "before_tests": "./node_modules/coffee-script/bin/coffee -co tests/compiledcoffee tests/**/",
+    "on_exit": "rm tests/compiledcoffee -rf",
     "src_files": ["tests/**/*.js",
-                  "public/assets/scripts/**/*.js"]
+                  "tests/**/*.coffee",
+                  "public/assets/scripts/**/*.js"],
+    "serve_files": [
+        "tests/**/*.js"
+    ]
 }
