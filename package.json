@@ -14,7 +14,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-      "test": "npm run test-full",
+      "test": "npm run test-lite",
     "test-full": "mocha --reporter spec",
     "test-lite": "mocha --reporter spec -g 'emberfs generator' -i"
   },

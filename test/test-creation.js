@@ -72,6 +72,7 @@ describe('emberfs generator', function () {
                     .on('end', function() {
                         console.log('running client side tests');
                         exec('gulp test', function(error, stdout, stderr) {
+                            if (error) { console.log('Error: ' + error); }
                             expect(stdout).to.match(/# tests\s*4/);
                             expect(stdout).to.match(/# pass\s*4/);
                             expect(stdout).to.match(/# fail\s*0/);
