@@ -35,12 +35,14 @@ describe('emberfs generator', function () {
                 // bower_components
                 fs.symlinkSync(path.join(__dirname, 'fixtures/bower_components'),
                                path.join(dir, 'app/client/bower_components'), 'dir');
-
-                console.log('running npm install; bower install on fixtures');
-                exec('npm install; bower install', { cwd: path.join(__dirname, 'fixtures') }, function(error) {
-                    if (error) { console.log('Error: ' + error); }
-                    done();
-                });
+                
+                // console.log('running npm install; bower install on fixtures');
+                // exec('npm install; bower install', { cwd: path.join(__dirname, 'fixtures') }, function(error) {
+                //     if (error) { console.log('Error: ' + error); }
+                //     done();
+                //     console.log('npm done');
+                // });
+                done();
             });
     });
 
@@ -49,7 +51,8 @@ describe('emberfs generator', function () {
         describe('with default options', function() {
 
             it('should pass jshint', function(done) {
-                this.timeout(24000000);
+                this.timeout(24000);
+                console.log('jshint start');
                 this.app.withPrompt(defaultOptions)
                     .on('end', function() {
                         console.log('running jshint');
@@ -57,20 +60,20 @@ describe('emberfs generator', function () {
                             if (error) { console.log('Error: ' + error); }
                             expect(stdout).to.contain('Finished \'jshint\'');
                             expect(stdout).to.not.contain('problems');
-                            
                             done();
+                            console.log('jshint done');
                         });
                     });
             });
             // pending for now, because gulp test doesn't exit properly
             it('should pass all client tests', function(done) {
-                this.timeout(600000);
+                this.timeout(60000);
                 this.app.withPrompt(defaultOptions)
                     .on('end', function() {
                         console.log('running client side tests');
                         exec('gulp test', function(error, stdout, stderr) {
-                            expect(stdout).to.match(/# tests\s*3/);
-                            expect(stdout).to.match(/# pass\s*3/);
+                            expect(stdout).to.match(/# tests\s*4/);
+                            expect(stdout).to.match(/# pass\s*4/);
                             expect(stdout).to.match(/# fail\s*0/);
                             done();
                         });
