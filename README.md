@@ -125,6 +125,21 @@ $ yo emberfs:model user
    create app/client/scripts/models/user_model.js
    create tests/unit/models/user-test.js
 ```
+
+### Test
+
+Generates an integration test.
+
+`yo emberfs:test testName`
+
+```bash
+$ yo emberfs:test firsttest
+   create tests/integration/firsttest-test.coffee
+```
+####Options
+
+* `--js` uses javascript instead of coffescript (default is coffescript)
+
 ## Configuration
 
 This generator is scaffolding support for gulp-ember-requirejs
