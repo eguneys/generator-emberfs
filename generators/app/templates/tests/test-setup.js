@@ -6,6 +6,7 @@ require.config({
         models: '../app/models',
         views: '../app/views',
         controllers: '../app/controllers',
+        components: '../app/components',
         mixins: '../app/mixins',
         templates: '../../templates',
         ember: 'ember/ember',

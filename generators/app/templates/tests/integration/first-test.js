@@ -1,9 +1,13 @@
 define(['app/app'], function(App) {
     module('Integration Tests', {
         setup: function() {
-            App.reset();
         },
         teardown: function() {
+            // make sure to call App.reset
+            // from the teardown function
+            // otherwise Ember fails.
+            // (unit tests for component)
+            App.reset();
         }
     });
     

@@ -27,10 +27,9 @@ describe('emberfs:model generator', function () {
         this.app_model.withPrompt(defaultOptions)
             .withArguments(defaultArgs)
             .on('end', function() {
-
                 assert.file([
                     'app/client/scripts/models/test_model.js',
-                    'tests/unit/models/test-test.js'
+                    'tests/unit/models/test-test.coffee'
                 ]);
 
                 assert.fileContent('app/client/scripts/models/test_model.js', /App.Test = DS.Model/);
@@ -46,13 +45,36 @@ describe('emberfs:model generator', function () {
 
 
                 // unit test
-                assert.fileContent('tests/unit/models/test-test.js',
-                                   /define\(\['models\/test_model'\], /);
+                assert.fileContent('tests/unit/models/test-test.coffee',
+                                   /define \['models\/test_model'\], /);
                 
-                assert.fileContent('tests/unit/models/test-test.js',
-                                   /moduleForModel\('test', 'Test Model', \{/);
+                assert.fileContent('tests/unit/models/test-test.coffee',
+                                   /moduleForModel 'test', 'Test Model', \{/);
                 
                 done();
             });
+    });
+
+    describe('with --js option', function(done) {
+        it('should generate javascript test files', function(done) {
+            this.app_model.withPrompt(defaultOptions)
+                .withArguments(defaultArgs)
+                .withOptions({'js':true})
+                .on('end', function() {
+
+                    assert.file([
+                        'tests/unit/models/test-test.js'
+                    ]);
+                    
+                    // unit test
+                    assert.fileContent('tests/unit/models/test-test.js',
+                                       /define\(\['models\/test_model'\], /);
+                
+                    assert.fileContent('tests/unit/models/test-test.js',
+                                       /moduleForModel\('test', 'Test Model', \{/);
+
+                    done();
+                });
+        });
     });
 });

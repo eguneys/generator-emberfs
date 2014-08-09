@@ -31,7 +31,7 @@ describe('emberfs:component generator', function () {
                 assert.file([
                     'app/client/scripts/components/test-test.js',
                     'app/client/templates/components/test-test.hbs',
-                    'tests/unit/components/test-test-test.js'
+                    'tests/unit/components/test-test-test.coffee'
                 ]);
 
                 assert.fileContent(
@@ -40,16 +40,42 @@ describe('emberfs:component generator', function () {
                 );
 
                 assert.fileContent(
-                    'tests/unit/components/test-test-test.js',
-                    /define\(\['components\/test\-test'\], /
+                    'tests/unit/components/test-test-test.coffee',
+                    /define \['components\/test\-test'\], /
                 );
 
                 assert.fileContent(
-                    'tests/unit/components/test-test-test.js',
-                    /moduleForComponent\('test\-test', 'TestTest Component', \{/
+                    'tests/unit/components/test-test-test.coffee',
+                    /moduleForComponent 'test\-test', 'TestTest Component', \{/
                 );
 
                 done();
             });
+    });
+
+    describe("with --js option", function() {
+        it('should generate javascript test files', function(done) {
+            this.app_template.withPrompt(defaultOptions)
+                .withArguments(defaultArgs)
+                .withOptions({js:true})
+                .on('end', function() {
+
+                    assert.file([
+                        'tests/unit/components/test-test-test.js'
+                    ]);
+                    
+                    assert.fileContent(
+                        'tests/unit/components/test-test-test.js',
+                            /define\(\['components\/test\-test'\], /
+                    );
+
+                    assert.fileContent(
+                        'tests/unit/components/test-test-test.js',
+                    /moduleForComponent\('test\-test', 'TestTest Component', \{/
+                    );
+
+                    done();
+                });
+        });
     });
 });

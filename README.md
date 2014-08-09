@@ -111,8 +111,12 @@ Generates a controller.
 ```bash
 $ yo emberfs:controller user
    create app/client/scripts/controllers/user_controller.js
-   create tests/unit/controllers/user-test.js
+   create tests/unit/controllers/user-test.coffee
 ```
+
+#### Options
+
+* `--js` uses javascript instead of coffescript for unit test (default is coffescript)
 
 ### Model
 
@@ -123,8 +127,12 @@ Generates a model.
 ```bash
 $ yo emberfs:model user
    create app/client/scripts/models/user_model.js
-   create tests/unit/models/user-test.js
+   create tests/unit/models/user-test.coffee
 ```
+
+#### Options
+
+* `--js` uses javascript instead of coffescript for unit test (default is coffescript)
 
 ### Test
 
@@ -139,6 +147,10 @@ $ yo emberfs:test firsttest
 ####Options
 
 * `--js` uses javascript instead of coffescript (default is coffescript)
+
+#### Important Note In your integration tests, make sure you call
+`App.reset` in your `teardown` function (not `setup`), because it
+conflicts with component unit tests somehow.
 
 ## Configuration
 

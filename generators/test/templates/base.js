@@ -1,9 +1,13 @@
 define(['app/app'], function(App) {
     module('Integration: <%= _.classify(name) %>', {
         setup: function() {
-            App.reset();
         },
         teardown: function() {
+            // make sure to call app.reset
+            // from the teardown function
+            // otherwise Ember fails.
+            // (unit tests for component)
+            App.reset();
         }
     });
     

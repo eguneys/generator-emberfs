@@ -16,7 +16,7 @@
 <ol id="qunit-tests"></ol>
 <div id="qunit-fixture"></div>
 
-<div id="ember-fixture"></div>
+<div id="ember-testing"></div>
 
 <script>
  QUnit.config.autostart = false;
@@ -26,7 +26,7 @@
  require(['../tests/test-setup.js'], function() {
    
    require(['app/app', 'app/main'], function(App) {
-     App.rootElement = "#ember-fixture";
+     App.rootElement = "#ember-testing";
      App.setupForTesting();
      App.injectTestHelpers();
 
