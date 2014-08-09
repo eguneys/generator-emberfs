@@ -8,3 +8,4 @@ before_install:
   - cd test/fixtures
   - npm install
   - bower install
+  - cd ../../
