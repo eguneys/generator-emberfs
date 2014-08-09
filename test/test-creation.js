@@ -67,7 +67,7 @@ describe('emberfs generator', function () {
             });
             // pending for now, because gulp test doesn't exit properly
             it('should pass all client tests', function(done) {
-                this.timeout(60000);
+                this.timeout(240000);
                 this.app.withPrompt(defaultOptions)
                     .on('end', function() {
                         console.log('running client side tests');

@@ -10,7 +10,7 @@ var router = express.Router();
 
 app.use(require('connect-livereload')());
 
-var expressHbs = require('express3-handlebars');
+var expressHbs = require('express-handlebars');
 
 app.engine('.hbs', expressHbs({ extname: '.hbs',
                                 defaultLayout:'main',
