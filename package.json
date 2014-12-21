@@ -1,6 +1,6 @@
 {
   "name": "generator-emberfs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Yeoman generator for Ember fullstack",
   "license": "MIT",
   "main": "app/index.js",
@@ -14,12 +14,12 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-      "test": "npm run test-lite",
+    "test": "npm run test-lite",
     "test-full": "mocha --reporter spec",
     "test-lite": "mocha --reporter spec -g 'emberfs generator' -i"
   },
   "files": [
-    "app"
+    "generators"
   ],
   "keywords": [
     "yeoman-generator",
@@ -32,8 +32,8 @@
     "requirejs"
   ],
   "dependencies": {
-    "chalk": "~0.4.0",
-    "yeoman-generator": "^0.17.0",
+    "chalk": "^0.4.0",
+    "yeoman-generator": "^0.17.7",
     "yosay": "^0.1.0"
   },
   "devDependencies": {
