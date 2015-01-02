@@ -19,7 +19,8 @@
     "test-lite": "mocha --reporter spec -g 'emberfs generator' -i"
   },
   "files": [
-    "generators"
+    "generators",
+    "util.js"
   ],
   "keywords": [
     "yeoman-generator",
