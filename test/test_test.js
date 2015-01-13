@@ -9,7 +9,7 @@ var expect = chai.expect;
 
 
 describe('emberfs:test generator', function () {
-    
+
     var defaultOptions = {
     };
 
@@ -34,8 +34,8 @@ describe('emberfs:test generator', function () {
 
                     assert.file(defaultExpectedFiles);
 
-                    assert.fileContent('tests/integration/firsttest-test.coffee', /module 'Integration: Firsttest', {/);
-                    
+                    assert.fileContent('tests/integration/firsttest-test.coffee', /module 'Integration: FirstTest', {/);
+
                     done();
                 });
         });
@@ -50,8 +50,8 @@ describe('emberfs:test generator', function () {
 
                     assert.file('tests/integration/firsttest-test.js');
 
-                    assert.fileContent('tests/integration/firsttest-test.js', /module\('Integration: Firsttest', {/);
-                    
+                    assert.fileContent('tests/integration/firsttest-test.js', /module\('Integration: FirstTest', {/);
+
                     done();
                 });
         });
